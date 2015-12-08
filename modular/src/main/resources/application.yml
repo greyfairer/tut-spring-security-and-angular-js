@@ -1,6 +1,13 @@
 security:
-  user:
-    password: password
+  oauth2:
+    client:
+      accessTokenUri: http://localhost:9999/sso/oauth/token
+      userAuthorizationUri: http://localhost:9999/sso/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
+    resource:
+      userInfoUri: http://localhost:9999/sso/user
 logging:
   level:
+    org.springframework: INFO
     org.springframework.security: DEBUG

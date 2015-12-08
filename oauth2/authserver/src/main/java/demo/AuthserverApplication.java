@@ -1,8 +1,5 @@
 package demo;
 
-import java.security.KeyPair;
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -29,6 +27,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.security.KeyPair;
+import java.security.Principal;
+import java.util.Map;
+
 @SpringBootApplication
 @Controller
 @SessionAttributes("authorizationRequest")
@@ -37,7 +39,11 @@ public class AuthserverApplication extends WebMvcConfigurerAdapter {
 
 	@RequestMapping("/user")
 	@ResponseBody
-	public Principal user(Principal user) {
+	public Principal user(Authentication user) {
+		if(user.getDetails() instanceof Map){
+			((Map)user.getDetails()).put("test","myssoDetail");
+		}
+
 		return user;
 	}
 
@@ -70,9 +76,13 @@ public class AuthserverApplication extends WebMvcConfigurerAdapter {
 			// @formatter:on
 		}
 
+
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			auth.parentAuthenticationManager(authenticationManager);
+			auth.parentAuthenticationManager(authenticationManager)
+				.inMemoryAuthentication()
+				.withUser("marissa").password("koala").roles("USER").and()
+				.withUser("paul").password("emu").roles("USER");
 		}
 	}
 
