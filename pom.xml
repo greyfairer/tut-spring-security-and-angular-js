@@ -9,7 +9,7 @@
 	<name>Spring Security Angular Samples</name>
 
 	<modules>
-		<module>authserver</module>
+		<module>oauth2-authserver</module>
 		<module>modular</module>
 	</modules>
 	
