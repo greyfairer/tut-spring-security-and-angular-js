@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */ // Remove this when upgrading to Spring Boot 1.3.1 (https://github.com/spring-projects/spring-boot/issues/4553)
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class WorkaroundRestTemplateCustomizer implements UserInfoRestTemplateCustomizer {
+public class WorkaroundRestTemplateCustomizer implements UserInfoRestTemplateCustomizer {
 
 	@Override
 	public void customize(OAuth2RestTemplate template) {
